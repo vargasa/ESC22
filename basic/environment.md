@@ -29,9 +29,9 @@ You can use either the eduroam or the CeUB Wi-Fi networks.
 
 You have been assigned a personal account, with a username of the form
 `studentNM`, where `NM` is a number between 56 and 81. You should have received
-a mail from ??? with subject ??? including the credentials and the instructions
-to log on the CNAF gateway host. In the following, when you see `student`,
-replace it with your personal account.
+a mail from _sysop@cnaf.infn.it_ with subject _Account at CNAF_, including the
+credentials and the instructions to log on the CNAF gateway host. In the
+following, when you see `student`, replace it with your personal account.
 
 To log on the computers prepared for the School, you have to go first through
 the CNAF gateway host, named `bastion.cnaf.infn.it`, with the username
