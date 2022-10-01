@@ -22,16 +22,18 @@ int main(int argc, char** argv)
   // pointer for device memory
   int* d_a;
 
+  int N = 64;
   // define grid and block size
-  int numBlocks          = 8;
   int numThreadsPerBlock = 8;
 
+  int numBlocks          = N/numThreadsPerBlock;
+
   // host vector
-  // hint: you might want to reserve some memory
+  // hint: the vector is empty, you might want to allocate some memory..
   std::vector<int> h_a;
 
   // Part 1 of 5: allocate host and device memory
-  size_t memSize = numBlocks * numThreadsPerBlock * sizeof(int);
+  size_t memSize = N * sizeof(int);
   cudaMalloc();
 
   // Part 2 of 5: configure and launch kernel
@@ -52,10 +54,8 @@ int main(int argc, char** argv)
   checkCUDAError("cudaMemcpy");
 
   // Part 5 of 5: verify the data returned to the host is correct
-  for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 8; ++j) {
-      // assert(h_a[i * numThreadsPerBlock + j] == i + j + 42);
-    }
+  for (int i = 0; i < N; ++i) {
+    assert(h_a[i] == i 42);
   }
 
   // free device memory
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
   // If the program makes it this far, then the results are correct and
   // there are no run-time errors.  Good work!
-  std::cout << "Correct!" << std::endl;
+  std::cout << "Correct, good work!" << std::endl;
 
   return 0;
 }
