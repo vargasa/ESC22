@@ -9,7 +9,7 @@ The CUDA Runtime API reference manual is a very useful source of information:
 <a href="http://docs.nvidia.com/cuda/cuda-runtime-api/index.html" target="_blank">http://docs.nvidia.com/cuda/cuda-runtime-api/index.html</a>
 
 ```bash
-$ cd kseta-22/hands-on/cuda-exercises
+$ cd esc22/hands-on/cuda-exercises
 ```
 
 
@@ -20,7 +20,7 @@ $ nvcc --version
 
 Compile and run the `deviceQuery` application:
 ```bash
-cd kseta-22/hands-on/cuda-exercises/utils/deviceQuery
+cd esc22/hands-on/cuda-exercises/utils/deviceQuery
 make
 ```
 
@@ -94,16 +94,18 @@ $ nvcc cuda_mem_model.cu -o ex01
 $ ./ex01
 ```
 
-* Bonus: Measure the PCI Express bandwidth.
+7. Repeat the exercise using CUDA Streams with `cudaMallocAsync`, `cudaFreeAsync` and `cudaMemcpyAsync`.
+   1. Hint: Remember to check that asynchronous operations have completed before using their results.
+8. Measure the interconnection bandwidth between CPU and GPU by measuring the time needed to transfer `100 MB` of data.
 
 ### Exercise 2. Launch a kernel
 By completing this exercise you will learn how to configure and launch a simple CUDA kernel.
 
 1. Allocate device memory;
-2. Configure the kernel to run using a one-dimensional grid of one-dimensional blocks;
+2. Configure the kernel to run using a one-dimensional grid of one-dimensional blocks (i.e. using only the `x` coordinate for `blockIdx` and `threadIdx`);
 3. Each GPU thread should set one element of the array to:
 
-   `d_a[i] = blockIdx.x + threadIdx.x + 42;`
+   `d_a[i] = i + 42;`
 4. Copy the results to the host memory;
 5. Check the correctness of the results
 
@@ -113,8 +115,10 @@ M is a matrix of NxN integers.
 1. Set N=4
 2. Write a kernel that sets each element of the matrix to its linear index (e.g. M[2,3] = 2*N + 3), by making use of two-dimensional grid and blocks. (Two-dimensional means using the x and y coordinates).
 3. Copy the result to the host and check that it is correct.
-4. Try with a rectangular matrix 19x67. Hint: check the kernel launch parameters.
+4. Try with a rectangular matrix 19x67. 
 
+Hint: check the kernel launch parameters.
+Hint: fix the number of threads per block in each dimension and find the number of blocks needed to cover the full matrix. Pay attention not to write or read out of the matrix boundaries.
 
 ### Exercise 4. Measuring throughput
 The throughput of a kernel can be defined as the number of bytes read and written by a kernel in the unit of time.
@@ -140,10 +144,12 @@ Given an array `a[N]`, the reduction sum `Sum` of a is the sum of all its elemen
 3. Sum all the partial sums together.
 4. Check the result comparing with the host result.
 5. Measure the throughput of your reduction kernel using CUDA Events (see exercise 4)
-6. Analyze your application using `nvvp`. Do you think it can be improved? How?
+
 * Bonus: Can you implement a one-step reduction? Measure and compare the throughput of the two versions.
 * Challenge: The cumulative sum of an array `a[N]` is another array `b[N]`, the sum of prefixes of `a`:
 `b[i] = a[0] + a[1] + … + a[i]`. Implement a cumulative sum kernel assuming that the size of the input array is multiple of the block size.
+
+Hint. Analyze your application using `compute-sanitizer`. 
 
 ### Challenge: Histogram
 
