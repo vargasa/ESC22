@@ -140,15 +140,6 @@ gcc (GCC) 9.2.0
 ...
 ```
 
-* Enable the use of Threading Building Blocks (TBB) and check that it's
-  available
-
-```shell
-[student@esc ~]$ source /shared/software/tbb2019_20191006oss/bin/tbbvars.sh intel64 linux auto_tbbroot
-[student@esc ~]$ echo $TBBROOT
-/gpfs/gpfs/gpfs_maestro_software_new/tbb2019_20191006oss/bin/..
-```
-
 ## Editing source code
 
 ### Editing locally
