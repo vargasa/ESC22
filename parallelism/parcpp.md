@@ -8,6 +8,48 @@ section: parallelism
 ```bash
 module load compilers/gcc-9.2.0_sl7
 ```
+
+### Topology of the machine
+You can have a look at the topology of the machine you are running on with some tools:
+
+```bash
+[fpantaleohpc@hpc-201-11-40 ~]$ lscpu
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                80
+On-line CPU(s) list:   0-79
+Thread(s) per core:    2
+Core(s) per socket:    20
+Socket(s):             2
+NUMA node(s):          2
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 85
+Model name:            Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz
+Stepping:              4
+CPU MHz:               999.902
+CPU max MHz:           3700.0000
+CPU min MHz:           1000.0000
+BogoMIPS:              4800.00
+Virtualization:        VT-x
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              1024K
+L3 cache:              28160K
+NUMA node0 CPU(s):     0-19,40-59
+NUMA node1 CPU(s):     20-39,60-79
+Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb cat_l3 cdp_l3 invpcid_single intel_ppin intel_pt ssbd mba ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts pku ospke spec_ctrl intel_stibp flush_l1d
+
+```
+
+```bash
+lstopo --output-format png > lstopo.png
+```
+![](lstopo.png)
+
+
+
 ### Automatic Vectorization
 
 ```C++
@@ -178,6 +220,7 @@ Calculate the distance `r` of your point from the origin.
 If `r < 1`: the point is inside the circle and increase `Nin`.
 
 The ratio between `Nin` and `N` converges to the ratio between the areas.
+
 
 ### Setting the environment for Intel oneTBB
 
