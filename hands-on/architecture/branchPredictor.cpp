@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <random>
+
 
 int main()
 {
@@ -11,9 +13,12 @@ int main()
   std::vector<int> test(arraySize);
   std::vector<int> data(arraySize);
 
+  std::mt19937 engine;
+  std::uniform_int_distribution<> uniformDist(0,256);
+
   for (unsigned c = 0; c < arraySize; ++c) {
-    test[c] = std::rand() % 256;
-    data[c] = std::rand() % 256;
+    test[c] = uniformDist(engine);
+    data[c] = uniformDist(engine);
   }
 
   if (sorted)
