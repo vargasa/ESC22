@@ -32,7 +32,7 @@ int main()
     }
   }
 
-  std::cout << "sum = " << sum << ' ' << "sorted: " << (sorted? "yes" : "no") << std::endl;
+  std::cout << "sorted: " << (sorted? "yes" : "no") << std::endl;
 
   return 0;
 }
