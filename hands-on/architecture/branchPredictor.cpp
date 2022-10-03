@@ -22,9 +22,10 @@ int main()
   if (sorted)
     std::sort(test.begin(), test.end());
 
-  long long sum = 0;
 
-  for (unsigned i = 0; i < 100000; ++i) {
+  for (unsigned i = 0; i < 1000000; ++i) {
+    long long sum = 0;
+
     for (unsigned c = 0; c < arraySize; ++c) {
       if (test[c] >= 128)
         sum += data[c];
