@@ -1,7 +1,7 @@
 // adapted from http://www.bnikolic.co.uk/blog/hpc-perf-branchprediction.html
-// (this version avoids compiler optimization)
-// try with -O2 -Ofast and then
-// g++ -Ofast -march=native branchPredictor.cpp -funroll-all-loops
+#pragma GCC optimize("O2", "unroll-loops") // Optimization flags
+#pragma GCC option("arch=native", "tune=native") 
+
 #include <algorithm>
 #include <iostream>
 #include <vector>
