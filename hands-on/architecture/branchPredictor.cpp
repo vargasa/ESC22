@@ -24,7 +24,7 @@ int main()
 
   long long sum = 0;
 
-  for (unsigned i = 0; i < 1000000; ++i) {
+  for (unsigned i = 0; i < 10000; ++i) {
 
     for (unsigned c = 0; c < arraySize; ++c) {
       if (test[c] >= 128)
