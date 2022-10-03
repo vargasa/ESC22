@@ -14,19 +14,19 @@ such as cycles, executed instructions, loads from a given level of the memory ca
 The easiest way to use `perf` is to profile the whole application (say `./a.out`) using a default set of events
 
 ```shell
-perf stat -d ./a.out
+perf stat --delay 0 -d ./a.out
 ```
 
 or even
 
 ```shell
-perf stat -d -d -d ./a.out
+perf stat --delay 0 -d -d -d ./a.out
 ```
 
 One can choose a set of events and list them on the command line, for example:
 
 ```shell
-perf stat -e task-clock -e cycles -e instructions \
+perf stat --delay 0 -e task-clock -e cycles -e instructions \
 -e branch-instructions -e branch-misses \
 -e idle-cycles-frontend -e idle-cycles-backend \
 -e cache-references -e cache-misses -e L1-dcache-loads -e L1-dcache-load-misses ./a.out
