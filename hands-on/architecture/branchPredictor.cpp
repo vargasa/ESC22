@@ -22,17 +22,18 @@ int main()
   if (sorted)
     std::sort(test.begin(), test.end());
 
+  long long sum = 0;
 
   for (unsigned i = 0; i < 1000000; ++i) {
-    long long sum = 0;
 
     for (unsigned c = 0; c < arraySize; ++c) {
       if (test[c] >= 128)
         sum += data[c];
     }
+    sum = 0;
   }
 
-  std::cout << "sorted: " << (sorted? "yes" : "no") << std::endl;
+  std::cout <<"sum " << sum <<  " sorted: " << (sorted? "yes" : "no") << std::endl;
 
   return 0;
 }
