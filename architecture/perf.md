@@ -40,8 +40,18 @@ executable, counting those events.
 
 ### Architecture: Front-end
 
-Consider [branchPredictor.cpp]({{site.exercises_repo}}/hands-on/architecture/branchPredictor.cpp). Compile it and
-measure its performance with and without the sorting. Explain the behaviour. Understand what it is happening (godbolt can be of help). Modify the code to make it "branchless".
+Consider [branchPredictor.cpp]({{site.exercises_repo}}/hands-on/architecture/branchPredictor.cpp). Compile it with 
+```
+g++ -Wall -g -march=native branchPredictor.cpp -o branchPredictor -O2 -funroll-all-loops
+```
+
+measure its performance with
+
+```
+perf stat -d --delay 0 ./branchPredictor
+```
+Try to enable and disable sorting. What happens?
+Explain the behaviour. Modify the code to make it "branchless".
 
 ### toplev
 
