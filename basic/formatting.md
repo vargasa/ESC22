@@ -9,6 +9,8 @@ The goal of this exercise is to learn how to use
 format your code automatically and uniformly. Remember to enable the
 `llvm-toolset-7` first.
 
+    [student@esc ~]$ scl enable llvm-toolset-7 bash
+
 Consider [hello.cpp]({{site.exercises_repo}}/hands-on/basic/hello.cpp):
 
     [student@esc ~]$ cd esc/hands-on/basic
