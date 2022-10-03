@@ -64,9 +64,7 @@ Be sure the output includes `g++ (GCC) 9.2.0`
 
 To enable the use of TBB:
 
-    [student@esc cpp]$ source \
-    /storage/gpfs_maestro_home/hpc_software/tbb2019_20191006oss/bin/tbbvars.sh \
-    intel64 linux auto_tbbroot
+    [student@esc cpp]$ source /shared/software/tbb2019_20191006oss/bin/tbbvars.sh intel64 linux auto_tbbroot
 
 To compile and link:
 
