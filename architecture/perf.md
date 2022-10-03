@@ -41,9 +41,7 @@ executable, counting those events.
 ### Architecture: Front-end
 
 Consider [branchPredictor.cpp]({{site.exercises_repo}}/hands-on/architecture/branchPredictor.cpp). Compile it and
-measure its performance with and without the sorting (enough to run with and without an argument). Explain the
-behaviour. Try the "original" version: possibly with a different compiler (gcc 4.7 for instance). Understand what it is
-happening (godbolt can be of help). Modify the code to make it "branchless".
+measure its performance with and without the sorting. Explain the behaviour. Understand what it is happening (godbolt can be of help). Modify the code to make it "branchless".
 
 ### toplev
 
@@ -55,7 +53,7 @@ compile
 g++ -Wall -g -march=native
 ``` 
 with different compiler options (`-O2, -O3, -Ofast, -funroll-loops`) measure performance,
-indentify "hotspot", modify code to speed it up.
+identify "hotspot", modify code to speed it up.
 
 You can also try the toplev analysis by: 
 

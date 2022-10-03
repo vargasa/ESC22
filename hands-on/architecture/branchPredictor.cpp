@@ -1,13 +1,14 @@
 // adapted from http://www.bnikolic.co.uk/blog/hpc-perf-branchprediction.html
 // (this version avoids compiler optimization)
 // try with -O2 -Ofast and then
-// c++ -Ofast -march=native branchPredictor.cpp -funroll-all-loops
+// g++ -Ofast -march=native branchPredictor.cpp -funroll-all-loops
 #include <algorithm>
 #include <iostream>
 #include <vector>
 
-int main(int argc, char**)
+int main()
 {
+  bool sorted = true;
   // generate data
   const size_t arraySize = 32768;
   std::vector<int> test(arraySize);
@@ -18,9 +19,7 @@ int main(int argc, char**)
     data[c] = std::rand() % 256;
   }
 
-  // If the data are sorted like shown here the program runs about
-  // 6x faster (on my test machine, with -O2)
-  if (argc > 1)
+  if (sorted)
     std::sort(test.begin(), test.end());
 
   long long sum = 0;
@@ -31,7 +30,8 @@ int main(int argc, char**)
         sum += data[c];
     }
   }
-  std::cout << "sum = " << sum << ' ' << argc << std::endl;
+
+  std::cout << "sum = " << sum << ' ' << "sorted: " << (sorted? "yes" : "no") << std::endl;
 
   return 0;
 }
