@@ -1,15 +1,15 @@
-    define bfs_sequential(graph(V,E), source s):
-2        for all v in V do
-3            d[v] = -1;
-4        d[s] = 0; level = 1; FS = {}; NS = {};
-5        push(s, FS);
-6        while FS !empty do
-7            for u in FS do 
-8                for each neighbour v of u do 
-9                    if d[v] = -1 then
-10                       push(v, NS);
-11                       d[v] = level;
-12           FS = NS, NS = {}, level = level + 1;
+//     define bfs_sequential(graph(V,E), source s):
+// 2        for all v in V do
+// 3            d[v] = -1;
+// 4        d[s] = 0; level = 1; FS = {}; NS = {};
+// 5        push(s, FS);
+// 6        while FS !empty do
+// 7            for u in FS do 
+// 8                for each neighbour v of u do 
+// 9                    if d[v] = -1 then
+// 10                       push(v, NS);
+// 11                       d[v] = level;
+// 12           FS = NS, NS = {}, level = level + 1;
 
 
 #include <vector>
