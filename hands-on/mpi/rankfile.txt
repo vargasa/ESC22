@@ -1,0 +1,16 @@
+rank 0=hpc-200-06-18 slot=pu0
+rank 1=hpc-200-06-18 slot=pu16
+rank 2=hpc-200-06-18 slot=pu1
+rank 3=hpc-200-06-18 slot=pu17
+rank 4=hpc-200-06-18 slot=pu2
+rank 5=hpc-200-06-18 slot=pu18
+rank 6=hpc-200-06-18 slot=p3
+rank 7=hpc-200-06-18 slot=p19
+rank 8=hpc-200-06-18 slot=p4
+rank 9=hpc-200-06-18 slot=p20
+rank 10=hpc-200-06-18 slot=p5
+rank 11=hpc-200-06-18 slot=p21
+rank 12=hpc-200-06-18 slot=p6
+rank 13=hpc-200-06-18 slot=p22
+rank 14=hpc-200-06-18 slot=p7
+rank 15=hpc-200-06-18 slot=p23
