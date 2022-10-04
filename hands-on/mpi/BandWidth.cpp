@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 //  int msg_size = 10;
 //  int msg_size = 10000;
 
-  int msg_size = 20000000; //test bw with nloop = 20
+  int msg_size = 40000000; //test bw with nloop = 10
 
 //////////////////////////////////////////////////////////////
 
