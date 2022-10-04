@@ -1,7 +1,7 @@
 ---
 title: Associative sum
 layout: main
-section: floatingpoint
+section: floatingpoints
 ---
 File: `hands-on/floatingpoints/commutative_sum.cc`
 In this simple example we:

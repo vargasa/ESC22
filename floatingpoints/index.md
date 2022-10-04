@@ -1,7 +1,7 @@
 ---
 title: Floating Point representation, usage and optimization
 layout: main
-section: floatingpoint
+section: floatingpoints
 ---
 
 {% include section_toc.html %}

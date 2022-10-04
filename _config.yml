@@ -40,17 +40,19 @@ menu:
     - name: compiletime
       label: Compile-time computation
   -
-    name: floatingpoint
+    name: floatingpoints
     label: FLOATING POINT
     items:
     - name: fprep
       label: Floating-Point Representation
     - name: fpcommutative
-      label: Is FP sum commutative?
+      label: Commutative sum
+    - name: fpquadratic
+      label: Quadratic Equation
+    - name: fppi
+      label: Pi approximation error
     - name: fpsafemath
       label: Floating-Point Optimizations
-    - name: fpbasic
-      label: Basic Exercise for you
   -
     name: vectorization
     label: VECTORIZATION
