@@ -46,6 +46,7 @@ int main()
             std::cout << "\t" << v.neighbors.back();
         } 
         std::cout << "\n";
+        vertexId++;
     }
 
 
