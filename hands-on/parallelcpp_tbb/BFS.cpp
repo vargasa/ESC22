@@ -15,6 +15,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
+#include <cassert>
 
 struct Vertex 
 {
@@ -29,6 +30,8 @@ int main()
     std::mt19937 engine;
     const int nVertices = 500;
     const int maxNumberEdgesPerVertex = 10;
+    int rootIndex = 27;
+    assert(rootIndex < nVertices);
     std::vector<Vertex> graph(nVertices);
     std::uniform_int_distribution<> adjUniformDist(0,nVertices-1);
     std::uniform_int_distribution<> nNeighborsUniformDist(1,maxNumberEdgesPerVertex);
@@ -36,7 +39,6 @@ int main()
     for(auto& v: graph)
     {
         std::cout << "\nvertex " << vertexId << " connected to: " << std::endl; 
-
         auto nNeighbors = nNeighborsUniformDist(engine);
         v.neighbors.reserve(nNeighbors);
         
@@ -49,7 +51,9 @@ int main()
         vertexId++;
     }
 
-
+    auto sequential_bfs = [&graph,=vertexId](){
+        
+    };
 
 }
 
