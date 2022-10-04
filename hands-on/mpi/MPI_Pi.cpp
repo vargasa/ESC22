@@ -5,8 +5,8 @@
 int main(int argc, char* argv[])
 {
 
-   constexpr int num_steps = 1e9;
-   int steps_per_process = 0;
+   constexpr long long int num_steps = 4e10;
+   long long int steps_per_process = 0;
    double pi = 0., mypi =0. ;
    constexpr double step = 1.0/(double) num_steps;
    double sum = 0.;
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
    double start_x = (myid * 1.0 / num_procs);
 
-   for (int i=0; i < steps_per_process; i++){
+   for (long long int i=0; i < steps_per_process; i++){
       auto x = start_x + (i + 0.5)*step;
       sum = sum + 4.0/(1.0 +x*x);
    }
