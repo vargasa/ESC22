@@ -51,8 +51,8 @@ int main()
         vertexId++;
     }
 
-    auto sequential_bfs = [&graph,=vertexId](){
-        
+    auto sequential_bfs = [=,&graph](){
+
     };
 
 }
