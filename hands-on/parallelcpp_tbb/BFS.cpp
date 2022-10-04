@@ -30,7 +30,7 @@ int main()
     const int nVertices = 500;
     const int maxNumberEdgesPerVertex = 10;
     std::vector<Vertex> graph(nVertices);
-    std::uniform_int_distribution<> adjUniformDist(0,nVertices);
+    std::uniform_int_distribution<> adjUniformDist(0,nVertices-1);
     std::uniform_int_distribution<> nNeighborsUniformDist(1,maxNumberEdgesPerVertex);
     int vertexId = 0;
     for(auto& v: graph)
