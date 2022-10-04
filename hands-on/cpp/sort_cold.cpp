@@ -6,7 +6,7 @@
 #include <iterator>
 #include <tuple>
 
-std::default_random_engine e { std::random_device{}() };
+std::default_random_engine e;
 std::uniform_int_distribution<> d;
 
 #ifndef EXTSIZE
@@ -18,7 +18,7 @@ constexpr int const ExtSize = EXTSIZE;
 struct S
 {
   int n;
-  char ext[ExtSize];
+  char ext[ExtSize]{};
 };
 
 int main()
