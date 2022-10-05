@@ -107,7 +107,7 @@ void recursive_visit(std::vector<Vertex> &graph, std::vector<int> &distances,
   // dequeue front node and print it
   int myVertexId = queue.front();
   auto &myVertex = graph[myVertexId];
-  auto distance = distances[myVertexId]+1;
+  auto distance = distances[myVertexId] + 1;
   queue.pop();
 
 #ifdef DEBUG_GRAPH
