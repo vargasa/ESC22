@@ -144,15 +144,15 @@ for (auto& t : v) {
 int main()
 {
   double sum = 0.;
-  constexpr unsigned int num_steps = 1 << 22;
+  unsigned int num_steps = 1 << 22;
   double pi = 0.0;
-  constexpr double step = 1.0/(double) num_steps;
-  auto start = std::chrono::system_clock::now();
+  double step = 1.0/(double) num_steps;
+  auto start = std::chrono::steady_clock::now();
   for (int i=0; i< num_steps; i++){
-    auto  x = (i+0.5)/num_steps;
+    auto  x = (i+0.5)*step;
     sum = sum + 4.0/(1.0+x*x);
   }
-  auto stop = std::chrono::system_clock::now();
+  auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> dur= stop - start;
   std::cout << dur.count() << " seconds" << std::endl;
   pi = step * sum;
@@ -212,11 +212,11 @@ Let's check that you can compile a simple tbb program:
 int main() {
   // Get the default number of threads
   int num_threads = oneapi::tbb::info::default_concurrency();
-  int N = 20;
+  int N = 100;
   std::cout << "Use indices: " << std::endl;
   // Run the default parallelism
   oneapi::tbb::parallel_for(0, N, [=](int i) {
-    std::cout << "i= " << i << std::endl;
+    std::cout << "Hello World from element " << i << std::endl;
     std::cout << "number of threads: "
               << oneapi::tbb::this_task_arena::max_concurrency() << std::endl;
   });
@@ -242,7 +242,7 @@ int main() {
         [=](const oneapi::tbb::blocked_range<size_t> &r) {
           for (auto i = r.begin(); i < r.end(); ++i) {
 
-            std::cout << "i= " << i << std::endl;
+            std::cout << "Hello World from element " << i << std::endl;
           }
           std::cout << "Number of threads in the task_arena: "
                     << oneapi::tbb::this_task_arena::max_concurrency()
