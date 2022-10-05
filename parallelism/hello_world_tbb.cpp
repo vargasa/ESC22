@@ -9,11 +9,11 @@
 int main() {
   // Get the default number of threads
   int num_threads = oneapi::tbb::info::default_concurrency();
-  int N = 20;
+  int N = 100;
   std::cout << "Use indices: " << std::endl;
   // Run the default parallelism
   oneapi::tbb::parallel_for(0, N, [=](int i) {
-    std::cout << "i= " << i << std::endl;
+    std::cout << "Hello World from element " << i << std::endl;
     std::cout << "number of threads: "
               << oneapi::tbb::this_task_arena::max_concurrency() << std::endl;
   });
@@ -39,7 +39,7 @@ int main() {
         [=](const oneapi::tbb::blocked_range<size_t> &r) {
           for (auto i = r.begin(); i < r.end(); ++i) {
 
-            std::cout << "i= " << i << std::endl;
+            std::cout << "Hello World from element " << i << std::endl;
           }
           std::cout << "Number of threads in the task_arena: "
                     << oneapi::tbb::this_task_arena::max_concurrency()
@@ -47,5 +47,4 @@ int main() {
         });
   });
 
-  return 0;
 }
