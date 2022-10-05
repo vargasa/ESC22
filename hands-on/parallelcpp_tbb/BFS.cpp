@@ -94,8 +94,7 @@ void iterative_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
     // queue with the queue of the next distance.
 
     distance++;
-    queue = nextDistanceQueue;
-    nextDistanceQueue.clear();
+    queue = std::move(nextDistanceQueue);
   }
 }
 
