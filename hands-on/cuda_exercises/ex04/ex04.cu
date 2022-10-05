@@ -1,8 +1,17 @@
+// C++ standard headers
 #include <iostream>
 #include <vector>
+
+// CUDA headers
+#include <cuda_runtime.h>
+
+// local headers
+#include "cuda_check.h"
+
 // Here you can set the device ID that was assigned to you
 #define MYDEVICE 0
-__global__ void saxpy(unsigned int n, double a, double* x, double* y)
+
+__global__ void saxpy(unsigned int n, double a, double const* __restrict__ x, double* __restrict__ y)
 {
   unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
   if (i < n)
@@ -11,42 +20,50 @@ __global__ void saxpy(unsigned int n, double a, double* x, double* y)
 
 int main(void)
 {
-  cudaSetDevice(MYDEVICE);
+  CUDA_CHECK(cudaSetDevice(MYDEVICE));
 
-  // 1<<N is the equivalent to 2^N
+  cudaStream_t queue;
+  CUDA_CHECK(cudaStreamCreate(&queue));
+
+  // 1<<N is equivalent to 2^N
   unsigned int N = 20 * (1 << 20);
-  double *x, *y, *d_x, *d_y;
+  double *d_x, *d_y;
   std::vector<double> x(N, 1.);
   std::vector<double> y(N, 2.);
 
-  cudaMalloc(&d_x, N * sizeof(double));
-  cudaMalloc(&d_y, N * sizeof(double));
+  CUDA_CHECK(cudaMallocAsync(&d_x, N * sizeof(double), queue));
+  CUDA_CHECK(cudaMallocAsync(&d_y, N * sizeof(double), queue));
 
   cudaEvent_t start, stop;
-  cudaEventCreate(&start);
-  cudaEventCreate(&stop);
+  CUDA_CHECK(cudaEventCreate(&start));
+  CUDA_CHECK(cudaEventCreate(&stop));
 
-  cudaMemcpy(d_x, x.data(), N * sizeof(double), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_y, y.data(), N * sizeof(double), cudaMemcpyHostToDevice);
+  CUDA_CHECK(cudaMemcpyAsync(d_x, x.data(), N * sizeof(double), cudaMemcpyHostToDevice, queue));
+  CUDA_CHECK(cudaMemcpyAsync(d_y, y.data(), N * sizeof(double), cudaMemcpyHostToDevice, queue));
 
-  cudaEventRecord(start);
+  CUDA_CHECK(cudaEventRecord(start, queue));
 
-  saxpy<<<(N + 511) / 512, 512>>>(N, 2.0, d_x, d_y);
+  saxpy<<<(N + 511) / 512, 512, 0, queue>>>(N, 2.0, d_x, d_y);
+  CUDA_CHECK(cudaGetLastError());
 
-  cudaEventRecord(stop);
+  CUDA_CHECK(cudaEventRecord(stop, queue));
 
-  cudaMemcpy(y.data(), d_y, N * sizeof(double), cudaMemcpyDeviceToHost);
+  CUDA_CHECK(cudaMemcpyAsync(y.data(), d_y, N * sizeof(double), cudaMemcpyDeviceToHost, queue));
 
-  cudaEventSynchronize(stop);
+  CUDA_CHECK(cudaEventSynchronize(stop));
 
   float milliseconds = 0;
-  cudaEventElapsedTime(&milliseconds, start, stop);
+  CUDA_CHECK(cudaEventElapsedTime(&milliseconds, start, stop));
 
   double maxError = 0.;
   for (unsigned int i = 0; i < N; i++) {
     maxError = max(maxError, abs(y[i] - 4.0));
   }
 
-  cudaFree(d_x);
-  cudaFree(d_y);
+  CUDA_CHECK(cudaFreeAsync(d_x, queue));
+  CUDA_CHECK(cudaFreeAsync(d_y, queue));
+
+  CUDA_CHECK(cudaEventDestroy(start));
+  CUDA_CHECK(cudaEventDestroy(stop));
+  CUDA_CHECK(cudaStreamDestroy(queue));
 }
