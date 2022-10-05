@@ -11,7 +11,7 @@
 struct Vertex {
   bool isVisited() const { return visited_; }
   void visit() {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(1));
     visited_ = true;
   }
   void reset() { visited_ = false; }
@@ -51,14 +51,14 @@ std::vector<Vertex> buildGraph(int nVertices, int maxNumberEdgesPerVertex,
   return directed_graph;
 }
 
-void bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
-         const int rootIndex) {
+void iterative_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
+                   const int rootIndex) {
   assert(rootIndex < graph.size());
   std::vector<int> queue;
-  std::vector<int> nextdistanceQueue;
+  std::vector<int> nextDistanceQueue;
   queue.push_back(rootIndex);
   distances[rootIndex] = 0;
-  graph[rootIndex].visited_ = true;
+  graph[rootIndex].visit();
 
   int distance = 1;
 
@@ -72,7 +72,7 @@ void bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
       std::cout << "visiting neighbors of " << vIndex << std::endl;
 #endif
       for (auto n : myVertex.neighbors_) {
-        if (!graph[n].isVisited() or
+        if (not graph[n].isVisited() or
             distance < distances[n]) // This condition will help you in parallel
                                      // processing
         {
@@ -80,7 +80,7 @@ void bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
           graph[n].visit();
           distances[n] = distance;
           // pushing back the neighbors so that we can explore its neighbors
-          nextdistanceQueue.push_back(n);
+          nextDistanceQueue.push_back(n);
 #ifdef DEBUG_GRAPH
           std::cout << "neighbor " << n << "\t";
 #endif
@@ -94,13 +94,13 @@ void bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
     // queue with the queue of the next distance.
 
     distance++;
-    queue = nextdistanceQueue;
-    nextdistanceQueue.clear();
+    queue = nextDistanceQueue;
+    nextDistanceQueue.clear();
   }
 }
 
 void recursive_visit(std::vector<Vertex> &graph, std::vector<int> &distances,
-                     std::queue<int> &queue, const int distance) {
+                     std::queue<int> &queue) {
   if (queue.empty()) {
     return;
   }
@@ -108,37 +108,36 @@ void recursive_visit(std::vector<Vertex> &graph, std::vector<int> &distances,
   // dequeue front node and print it
   int myVertexId = queue.front();
   auto &myVertex = graph[myVertexId];
+  auto distance = distances[myVertexId]+1;
   queue.pop();
 
 #ifdef DEBUG_GRAPH
   std::cout << "\nvisiting neighbors of " << myVertexId << std::endl;
 #endif
 
-  // do for every edge (v, u)
+  // do for every neighbor
   for (auto n : myVertex.neighbors_) {
-    {
-      if (!graph[n].isVisited() or distance < distances[n]) {
-        // mark it as discovered and enqueue it
+    if (not graph[n].isVisited() or distance < distances[n]) {
+      // mark it as discovered and enqueue it
 #ifdef DEBUG_GRAPH
-        std::cout << "visiting " << n << " distance " << distance << "\t";
+      std::cout << "visiting " << n << " distance " << distance << "\t";
 #endif
-        graph[n].visit();
-        distances[n] = distance;
-        queue.push(n);
-      }
+      graph[n].visit();
+      distances[n] = distance;
+      queue.push(n);
     }
-
-    recursive_visit(graph, distances, queue, distance + 1);
   }
+  recursive_visit(graph, distances, queue);
 }
 void recursive_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
                    const int rootIndex) {
   assert(rootIndex < graph.size());
   std::queue<int> queue;
   queue.push(rootIndex);
-  distances[rootIndex] = 0;
-  graph[rootIndex].visited_ = true;
-  recursive_visit(graph, distances, queue, 1);
+  auto distance = 0;
+  distances[rootIndex] = distance;
+  graph[rootIndex].visit();
+  recursive_visit(graph, distances, queue);
 };
 
 void parallel_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
@@ -146,8 +145,8 @@ void parallel_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
 
 int main() {
   std::mt19937 engine;
-  const int nVertices = 20;
-  const int maxNumberEdgesPerVertex = 5;
+  const int nVertices = 2000000;
+  const int maxNumberEdgesPerVertex = 500;
 
   // building a direct graph with nVertices, each connected to at most
   // maxNumberEdgesPerVertex
@@ -156,15 +155,18 @@ int main() {
   // We want to compute the distance of each vertex from the vertex at
   // rootIndex. The distance is defined as the minimum amount of vertices to
   // visit in order to reach the vertex from the root.
-  int rootIndex = 12;
+  int rootIndex = 0;
   // iterative BFS
   std::vector<int> bfs_distances(nVertices, -1);
   auto start = std::chrono::steady_clock::now();
-  bfs(graph, bfs_distances, rootIndex);
+  iterative_bfs(graph, bfs_distances, rootIndex);
   auto stop = std::chrono::steady_clock::now();
 
-  auto deltaT = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
-  std::cout << "iterative implementation: "<<  deltaT << " milliseconds" << std::endl;
+  auto deltaT =
+      std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
+          .count();
+  std::cout << "iterative implementation: " << deltaT << " milliseconds"
+            << std::endl;
 
   for (auto &v : graph) {
     v.reset();
@@ -176,8 +178,10 @@ int main() {
   start = std::chrono::steady_clock::now();
   recursive_bfs(graph, recursive_bfs_distances, rootIndex);
   stop = std::chrono::steady_clock::now();
-  deltaT = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
-  std::cout << "Recursive implementation: "<<  deltaT << " milliseconds" << std::endl;
+  deltaT = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
+               .count();
+  std::cout << "Recursive implementation: " << deltaT << " milliseconds"
+            << std::endl;
 
   // clearing the graph
   for (auto &v : graph) {
@@ -190,9 +194,10 @@ int main() {
   start = std::chrono::steady_clock::now();
   parallel_bfs(graph, parallel_bfs_distances, rootIndex);
   stop = std::chrono::steady_clock::now();
-  deltaT = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
-  std::cout << "Parallel implementation: "<<  deltaT << " milliseconds" << std::endl;
-
+  deltaT = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
+               .count();
+  std::cout << "Parallel implementation: " << deltaT << " milliseconds"
+            << std::endl;
 
   for (int i = 0; i < nVertices; ++i) {
 #ifdef DEBUG_GRAPH
