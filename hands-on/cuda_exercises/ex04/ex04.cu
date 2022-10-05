@@ -13,8 +13,9 @@
 
 __global__ void saxpy(unsigned int n, double a, double const* __restrict__ x, double* __restrict__ y)
 {
-  unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
-  if (i < n)
+  unsigned int const thread = blockIdx.x * blockDim.x + threadIdx.x;
+  unsigned int const stride = blockDim.x * gridDim.x;
+  for (auto i = thread; i < n; i += stride)
     y[i] = a * x[i] + y[i];
 }
 
@@ -43,7 +44,9 @@ int main(void)
 
   CUDA_CHECK(cudaEventRecord(start, queue));
 
-  saxpy<<<(N + 511) / 512, 512, 0, queue>>>(N, 2.0, d_x, d_y);
+  int threadsPerBlock = 512;
+  int blocksPerGrid = (N + threadsPerBlock - 1) / threadsPerBlock;
+  saxpy<<<blocksPerGrid, threadsPerBlock, 0, queue>>>(N, 2.0, d_x, d_y);
   CUDA_CHECK(cudaGetLastError());
 
   CUDA_CHECK(cudaEventRecord(stop, queue));
