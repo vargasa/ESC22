@@ -21,7 +21,7 @@ struct Vertex {
 };
 
 std::vector<Vertex> buildGraph(int nVertices, int maxNumberEdgesPerVertex,
-                               std::mt19937 &engine) {
+                               std::default_random_engine &engine) {
   std::vector<Vertex> directed_graph(nVertices);
   std::uniform_int_distribution<> adjUniformDist(0, nVertices - 1);
   std::uniform_int_distribution<> nNeighborsUniformDist(
@@ -143,7 +143,7 @@ void parallel_bfs(std::vector<Vertex> &graph, std::vector<int> &distances,
                   const int rootIndex) {}
 
 int main() {
-  std::mt19937 engine;
+  std::default_random_engine engine;
   const int nVertices = 2000000;
   const int maxNumberEdgesPerVertex = 500;
 
