@@ -48,8 +48,6 @@ int main(int argc, char** argv)
   CUDA_CHECK(cudaMallocAsync(___));
 
   // Part 2 of 5: configure and launch kernel
-  dim3 dimGrid = ___;
-  dim3 dimBlock = ___;
   myFirstKernel<<<___, ___, 0, queue>>>(___);
   CUDA_CHECK(cudaGetLastError());
 
