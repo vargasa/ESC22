@@ -8,24 +8,30 @@ section: parallelism
 The CUDA Runtime API reference manual is a very useful source of information:
 <a href="http://docs.nvidia.com/cuda/cuda-runtime-api/index.html" target="_blank">http://docs.nvidia.com/cuda/cuda-runtime-api/index.html</a>
 
-```bash
-$ cd esc22/hands-on/cuda-exercises
-```
+If you haven't already done it, load the CUDA module
 
+```shell
+$ module load compilers/cuda-11.2
+```
 
 Check that your environment is correctly configured to compile CUDA code by running:
 ```bash
 $ nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+...
+Cuda compilation tools, release 11.2, V11.2.67
+...
 ```
 
 Compile and run the `deviceQuery` application:
 ```bash
-cd esc22/hands-on/cuda-exercises/utils/deviceQuery
-make
+$ cd esc22/hands-on/cuda-exercises/utils/deviceQuery
+$ make
 ```
 
 You can get some useful information about the features and the limits that you will find on the device you will be running your code on. For example:
-```
+
+```shell
 $ ./deviceQuery 
 ./deviceQuery Starting...
 
@@ -75,11 +81,10 @@ deviceQuery, CUDA Driver = CUDART, CUDA Driver Version = 11.4, CUDA Runtime Vers
 Result = PASS
 ```
 
-
 Some of you are sharing the same machine and some time measurements can be influenced by other users running at the very same moment. It can be necessary to run time measurements multiple times.
 
-
 ### Exercise 1. CUDA Memory Model
+
 In this exercise you will learn what heterogeneous memory model means, by demonstrating the difference between host and device memory spaces.
 
 1. Allocate device memory;
@@ -99,6 +104,7 @@ $ ./ex01
 8. Measure the interconnection bandwidth between CPU and GPU by measuring the time needed to transfer `100 MB` of data.
 
 ### Exercise 2. Launch a kernel
+
 By completing this exercise you will learn how to configure and launch a simple CUDA kernel.
 
 1. Allocate device memory;
@@ -110,6 +116,7 @@ By completing this exercise you will learn how to configure and launch a simple 
 5. Check the correctness of the results
 
 ### Exercise 3. Two-dimensional grid
+
 M is a matrix of NxN integers.
 
 1. Set N=4
@@ -121,6 +128,7 @@ Hint: check the kernel launch parameters.
 Hint: fix the number of threads per block in each dimension and find the number of blocks needed to cover the full matrix. Pay attention not to write or read out of the matrix boundaries.
 
 ### Exercise 4. Measuring throughput
+
 The throughput of a kernel can be defined as the number of bytes read and written by a kernel in the unit of time.
 
 The CUDA event API includes calls to create and destroy events, record events, and compute the elapsed time in milliseconds between two recorded events.
@@ -136,9 +144,10 @@ Throughput (GB/s)= Memory_rate(Hz) * memory_interface_width(byte) * 2 /10<sup>9<
 3. Measure the throughput with a varying number of elements (in logarithmic scale). Before doing that write down what do you expect (you can also draw a diagram).
 4. What did you find out? Can you give an explanation?
 
-
 ### Exercise 5. Parallel Reduction
+
 Given an array `a[N]`, the reduction sum `Sum` of a is the sum of all its elements: `Sum=a[0]+a[1]+...a[N-1]`.
+
 1. Implement a block-wise parallel reduction (using the shared memory).
 2. For each block, save the partial sum.
 3. Sum all the partial sums together.
@@ -163,6 +172,7 @@ The input length can be assumed to be less than 2ˆ32. `NUM_BINS` is fixed at 40
 This can be split into two kernels: one that does a histogram without saturation, and a final kernel that cleans up the bins if they are too large. These two stages can also be combined into a single kernel.
 
 ### Utility. Measuring time using CUDA Events
+
 ```C++
 cudaEvent_t start, stop; float time;
 cudaEventCreate(&start);  cudaEventCreate(&stop);
@@ -174,13 +184,10 @@ cudaEventElapsedTime(&time, start, stop);
 std::cout << "Time for the kernel: " << time << " ms" << std::endl;
 ```
 
-
-
 ### Atomics <a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#atomic-functions" target="_blank">[1]</a>
 
 An atomic function performs a read-modify-write atomic operation on one 32-bit or 64-bit word residing in global or shared memory.
 The operation is atomic in the sense that it is guaranteed to be performed without interference from other threads.
-
 
 ```C++
 int atomicAdd(int* address, int val);
@@ -195,6 +202,3 @@ __half atomicAdd(__half *address, __half val);
 ```
 
 reads the 16-bit, 32-bit or 64-bit word old located at the address address in global or shared memory, computes (old + val), and stores the result back to memory at the same address. These three operations are performed in one atomic transaction. The function returns old.
-
-
-
