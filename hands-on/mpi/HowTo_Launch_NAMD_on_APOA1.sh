@@ -8,7 +8,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib/
 ####### Check that all libraries are resolved
 ldd namd2
 #############
-#Keep the defaults
+#Keep the defaults, but change the output path
 vim apoa1.namd
 ############
 
