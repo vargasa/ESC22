@@ -66,8 +66,6 @@ menu:
       label: Parallel C++
     - name: cuda
       label: CUDA
-    - name: alpaka
-      label: alpaka
     - name: mpi
       label: MPI
 
