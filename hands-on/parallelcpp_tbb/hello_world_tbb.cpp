@@ -12,10 +12,10 @@ int main() {
   int N = 100;
   std::cout << "Use indices: " << std::endl;
   // Run the default parallelism
-  oneapi::tbb::parallel_for(0, N, [=](int i) {
-    std::cout << "Hello World from element " << i << std::endl;
-    std::cout << "number of threads: "
-              << oneapi::tbb::this_task_arena::max_concurrency() << std::endl;
+  oneapi::tbb::parallel_for(0, N, [](int i) {
+    std::cout << "Hello World from element " << i << "\n\t"
+              << "number of threads: "
+              << oneapi::tbb::this_task_arena::max_concurrency() << '\n';
   });
 
   // Run the default parallelism

@@ -18,7 +18,6 @@ void print_float_bits(float f) {
     i = FLOATBITS - 1;
     PUT_BIT(f, i);
     putchar(' ');
-    for(i--; i >= 23; i--) {
         PUT_BIT(f, i);
     }
     putchar(' ');
