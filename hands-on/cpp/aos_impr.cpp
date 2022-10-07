@@ -66,7 +66,7 @@ std::chrono::duration<double> test(Particles& particles)
 
 int main()
 {
-  int const N = 1000000;
+  int const N = 1000;
 
   Particles particles;
   particles.reserve(N);

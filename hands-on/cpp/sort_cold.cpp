@@ -23,7 +23,7 @@ struct S
 
 int main()
 {
-  int const N = 10000000;
+  int const N = 1000;
 
   std::vector<S> v;
   std::generate_n(std::back_inserter(v), N, [] { return S { d(e) }; });

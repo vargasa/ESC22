@@ -54,7 +54,7 @@ inline bool operator<(P const& l, P const& r) {
 
 int main()
 {
-  int const N = 10000000;
+  int const N = 1000;
   std::vector<P> v;
   std::generate_n(std::back_inserter(v), N, make_P);
   
